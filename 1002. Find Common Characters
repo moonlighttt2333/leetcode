@@ -1,0 +1,40 @@
+1002. Find Common Characters
+
+Given an array A of strings made only from lowercase letters, return a list of all characters that show up in all strings within the list (including duplicates).  For example, if a character occurs 3 times in all strings but not 4 times, you need to include that character three times in the final answer.
+
+You may return the answer in any order.
+
+ 
+
+Example 1:
+
+Input: ["bella","label","roller"]
+Output: ["e","l","l"]
+Example 2:
+
+Input: ["cool","lock","cook"]
+Output: ["c","o"]
+
+class Solution(object):
+    def commonChars(self, A):
+        """
+        :type A: List[str]
+        :rtype: List[str]
+        """
+        char_dt = {}
+        for i, st in enumerate(A):
+            for c in st:
+                if c not in char_dt:
+                    char_dt[c] = {i:1}
+                elif i not in char_dt[c]:
+                    char_dt[c][i] = 1
+                else:
+                    char_dt[c][i] += 1
+                    
+        a_len = len(A)
+        common_char = []
+        for k,v in char_dt.items():
+            if len(v.keys()) == a_len:
+                dup_times = min(list(v.values()))
+                common_char.extend([k] * dup_times)
+        return common_char
