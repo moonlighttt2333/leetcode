@@ -1,0 +1,24 @@
+Given a binary array, find the maximum number of consecutive 1s in this array.
+
+Example 1:
+
+Input: [1,1,0,1,1,1]
+Output: 3
+Explanation: The first two digits or the last three digits are consecutive 1s.
+    The maximum number of consecutive 1s is 3.
+    
+class Solution:
+    def findMaxConsecutiveOnes(self, nums: List[int]) -> int:
+        consec_flag = True
+        max_consec = 0
+        consec_num = 0
+        for n in nums:
+            if n == 1:
+                consec_num += 1
+                if max_consec < consec_num:
+                    max_consec = consec_num
+            else:
+                consec = False
+                consec_num = 0
+        return max_consec
+                
