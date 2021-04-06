@@ -24,3 +24,18 @@ Input: image = [[1,1,0],[1,0,1],[0,0,0]]
 Output: [[1,0,0],[0,1,0],[1,1,1]]
 Explanation: First reverse each row: [[0,1,1],[1,0,1],[0,0,0]].
 Then, invert the image: [[1,0,0],[0,1,0],[1,1,1]]
+
+
+class Solution:
+    def flipAndInvertImage(self, image: List[List[int]]) -> List[List[int]]:
+        for idx in range(len(image)):
+            row = image[idx]
+            i = 0
+            j = len(row) - 1
+            while i <= j:
+                tmp = image[idx][i]
+                image[idx][i] = 1 - image[idx][j]
+                image[idx][j] = 1 - tmp
+                i += 1
+                j -= 1
+        return image
