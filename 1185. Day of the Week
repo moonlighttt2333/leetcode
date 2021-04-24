@@ -1,0 +1,48 @@
+Given a date, return the corresponding day of the week for that date.
+
+The input is given as three integers representing the day, month and year respectively.
+
+Return the answer as one of the following values {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}.
+
+ 
+
+Example 1:
+
+Input: day = 31, month = 8, year = 2019
+Output: "Saturday"
+Example 2:
+
+Input: day = 18, month = 7, year = 1999
+Output: "Sunday"
+Example 3:
+
+Input: day = 15, month = 8, year = 1993
+Output: "Sunday"
+ 
+
+class Solution:
+    def dayOfTheWeek(self, day: int, month: int, year: int) -> str:
+        m_arr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        m_dt = [31]
+        for i in range(1, len(m_arr)):
+            m_dt.append(m_dt[i-1] + m_arr[i])
+        
+        y_days = (year - 1971) * 365 + int((year - 1972)  / 4)
+        if year % 4 != 0:
+            y_days += 1
+        m_days = 0
+        if month > 1:
+            m_days = m_dt[month-2]
+            if year % 4 == 0 and year != 2100 and month > 2:
+                m_days += 1
+        total_days = (y_days + m_days + day) % 7
+        week = {
+            1: "Friday",
+            2: "Saturday",
+            3: "Sunday",
+            4: "Monday",
+            5: "Tuesday",
+            6: "Wednesday",
+            0: "Thursday",
+        }
+        return week[total_days]
