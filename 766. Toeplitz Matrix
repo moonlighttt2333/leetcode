@@ -1,0 +1,44 @@
+Given an m x n matrix, return true if the matrix is Toeplitz. Otherwise, return false.
+
+A matrix is Toeplitz if every diagonal from top-left to bottom-right has the same elements.
+
+
+Input: matrix = [[1,2,3,4],[5,1,2,3],[9,5,1,2]]
+Output: true
+Explanation:
+In the above grid, the diagonals are:
+"[9]", "[5, 5]", "[1, 1, 1]", "[2, 2, 2]", "[3, 3]", "[4]".
+In each diagonal all elements are the same, so the answer is True.
+
+class Solution:
+    def isToeplitzMatrix(self, matrix: List[List[int]]) -> bool:
+        m = len(matrix)
+        n = len(matrix[0])
+        
+        if m == 1 or n == 1:
+            return True
+        
+        i = m-2
+        j = 0
+        while i != 0 or j != n-1:
+            # check current diagonal
+            ele = matrix[i][j]
+            s = i
+            t = j
+            while s != m-1 and t != n - 1:
+                if matrix[s+1][t+1] != ele:
+                    return False
+                else:
+                    s += 1
+                    t += 1
+            # reset i,j to the first element of next diagonal
+            if i > 0:
+                i -= 1
+                j = 0
+            else:
+                i = 0
+                j += 1
+        return True
+            
+            
+        
