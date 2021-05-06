@@ -31,4 +31,12 @@ class Solution:
             left = self.findFirstIndex(arr, arr[idx])
             if left + N//4 < N and arr[left + N//4] == arr[idx]:
                 return arr[idx]
+
+class Solution:
+    def findSpecialInteger(self, arr: List[int]) -> int:
+        gap = len(arr) // 4
+        for i in range(len(arr)):
+            if arr[i] == arr[i + gap]:
+                return arr[i]
             
+
