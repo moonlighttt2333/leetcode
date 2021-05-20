@@ -8,3 +8,11 @@ for item in container:
 else:
     # Didn't find anything..
     not_found_in_container()
+
+2, Getting the index of the returned max or min item in an array
+
+if is_min_level:
+    return values.index(min(values))
+else:
+    return values.index(max(values))
+
