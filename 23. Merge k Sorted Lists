@@ -72,3 +72,33 @@ class Solution(object):
             if point.next:
                 q.put((point.next.val, point.next))
         return head.next
+        
+# add the index as the second item to compare when they have the same val
+# works for python3
+
+from queue import PriorityQueue
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        head = point = ListNode()
+        q = PriorityQueue()
+        
+        for idx, l in enumerate(lists):
+            if l:
+                q.put((l.val, idx, l))
+        while not q.empty():
+            _, idx, node = q.get()
+            point.next = node
+            point = point.next
+            if node.next:
+                q.put((node.next.val, idx, node.next))
+        return head.next
+                
+
+
+
