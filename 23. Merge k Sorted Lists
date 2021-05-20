@@ -44,3 +44,31 @@ class Solution:
             point = point.next
         return head.next
         
+
+# using priority queue
+# only works for python, not for python3
+
+from Queue import PriorityQueue
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def mergeKLists(self, lists):
+        """
+        :type lists: List[ListNode]
+        :rtype: ListNode
+        """
+        head = point = ListNode()
+        q = PriorityQueue()
+        
+        for l in lists:
+            if l:
+                q.put((l.val, l))
+        while not q.empty():
+            point.next = q.get()[1]
+            point = point.next
+            if point.next:
+                q.put((point.next.val, point.next))
+        return head.next
