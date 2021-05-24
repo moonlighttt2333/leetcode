@@ -54,4 +54,97 @@ class Solution:
             
         return pre.next    
         
+     
+     """
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+
+# KEY IDEA: Use dictionary to story the mapping relation of THE OLD_NODE => NEW_NODE 
+class Solution:
+    def __init__(self):
+        self.visited = {}
+        
+    def getCloneNode(self, node):
+        if not node:
+            return node
+        
+        # already visited
+        if node in self.visited:
+            return self.visited[node]
+        
+        # create a new node
+        new_node = Node(node.val)
+        self.visited[node] = new_node
+        return new_node
+        
+    def copyRandomList(self, head: 'Node') -> 'Node':
+        if not head:
+            return head
+        
+        new_node = Node(head.val)
+        old_node = head
+        
+        # iterative the linked list
+        self.visited[old_node] = new_node
+        while old_node:
+            new_node.next = self.getCloneNode(old_node.next)
+            new_node.random = self.getCloneNode(old_node.random)
+            
+            old_node = old_node.next
+            new_node = new_node.next
+
+        return self.visited[head]
+        
+  
+  # KEY IDEA: create the new node next to the original node, then recover the random pointer, then recover the next pointer
+  """
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+
+class Solution:  
+    def copyRandomList(self, head: 'Node') -> 'Node':
+        if not head:
+            return head
+        
+        # create new nodes next to its original node
+        old_node = head
+        return_node = None
+        while old_node:
+            new_node = Node(old_node.val, old_node.next, None)
+            if not return_node:
+                return_node = new_node
+            old_node.next = new_node
+            old_node = old_node.next.next
+            
+        # change random pointer
+        old_node = head
+        while old_node:
+            new_node = old_node.next
+            if old_node.random:
+                new_node.random = old_node.random.next
+            old_node = new_node.next
+            
+        # change next pointer
+        old_node = head
+        while old_node:
+            new_node = old_node.next
+            old_node.next = new_node.next
+            if not old_node.next:
+                new_node.next = None
+            else:
+                new_node.next = old_node.next.next
+            old_node = old_node.next
+        
+        return return_node
+        
         
