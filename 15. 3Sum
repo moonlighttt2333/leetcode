@@ -1,0 +1,47 @@
+Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+
+Notice that the solution set must not contain duplicate triplets.
+
+ 
+
+Example 1:
+
+Input: nums = [-1,0,1,2,-1,-4]
+Output: [[-1,-1,2],[-1,0,1]]
+Example 2:
+
+Input: nums = []
+Output: []
+Example 3:
+
+Input: nums = [0]
+Output: []
+
+
+class Solution:
+    def twoSum(self, nums, target):
+        dt = {}
+        ret = []
+        used = {}
+        for n in nums:
+            if n in used:
+                continue
+            if target - n in dt:
+                ret.append([target - n, n])
+                used[n] = 1
+            else:
+                dt[n] = 1
+        return ret
+        
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        ret = []
+        seen = {}
+        for i in range(len(nums) - 2):
+            if nums[i] in seen:
+                continue
+            seen[nums[i]] = 1
+            twos = self.twoSum(nums[i+1:], -nums[i])
+            for two in twos:
+                ret.append([nums[i], two[0], two[1]])
+        return ret 
