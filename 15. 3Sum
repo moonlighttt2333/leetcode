@@ -106,10 +106,11 @@ class Solution:
         return res
                 
 # res: store results. use tuple here in order to add into set (list is not hashable and cannot used as a set elment) 
-# We sort the tuple to avoid duplicates
+# We sort the tuple to avoid duplicates, naturally deduplicate since we use set to store the result
 
 # dups: used to deduplicate the outer loop, val1
-# seen: used to deduplicate the inner loop, we only add the reusult when the complementary is added as the element for the current outer loop, val1
+# seen: used to control the inner loop, we only add the reusult when the complementary is added as the element for the current outer loop, val1
+
 
 class Solution:                
     def threeSum(self, nums: List[int]) -> List[List[int]]:
