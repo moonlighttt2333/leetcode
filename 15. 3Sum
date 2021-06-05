@@ -105,5 +105,22 @@ class Solution:
                 twos = self.twoSum(nums, i, res)
         return res
                 
-           
-            
+# res: store results. use tuple here in order to add into set (list is not hashable and cannot used as a set elment) 
+# We sort the tuple to avoid duplicates
+
+# dups: used to deduplicate the outer loop, val1
+# seen: used to deduplicate the inner loop, we only add the reusult when the complementary is added as the element for the current outer loop, val1
+
+class Solution:                
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        res, dups = set(), set()
+        seen = {}
+        for i, val1 in enumerate(nums[:-2]):
+            if val1 not in dups:
+                dups.add(val1)
+                for j, val2 in enumerate(nums[i+1:]):
+                    complement = -val1 - val2
+                    if complement in seen and seen[complement] == i:
+                        res.add(tuple(sorted([val1, val2, complement])))
+                    seen[val2] = i
+        return res    
