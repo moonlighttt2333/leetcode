@@ -45,3 +45,35 @@ class Solution:
             for two in twos:
                 ret.append([nums[i], two[0], two[1]])
         return ret 
+        
+        
+
+# List as parameters, they will point to the same object.
+        
+class Solution:
+    def twoSum(self, nums, i, res):
+        target = -nums[i]
+        dt = {}
+        used = {}
+        for n in nums[i+1:]:
+            if n in used:
+                continue
+            if target - n in dt:
+                res.append([nums[i], target - n, n])
+                used[n] = 1
+            else:
+                dt[n] = 1
+        return res
+                
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        res = []
+        for i in range(len(nums) - 2):
+            if nums[i] > 0:
+                break
+            if i == 0 or nums[i] != nums[i-1]:
+                twos = self.twoSum(nums, i, res)
+        return res
+                
+           
+            
