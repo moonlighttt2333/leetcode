@@ -55,3 +55,35 @@ class Solution:
             self.swap(nums, i-1, idx)
             nums[i:] = sorted(nums[i:])
             return nums
+            
+            
+class Solution:
+    def swap(self, nums, idx1, idx2):
+        tmp = nums[idx1]
+        nums[idx1] = nums[idx2]
+        nums[idx2] = tmp
+    
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        if len(nums) <= 1:
+            return nums
+        
+        i = len(nums) - 1
+        # find the point where nums[i] > nums[i-1]
+        while i > 0 and nums[i] <= nums[i-1]:
+            i -= 1
+            
+        if i == 0:
+            # re-order from smallest to largest
+            return nums.sort()
+        else:
+            # find the next number 
+            idx = len(nums) - 1
+            while (idx > 0) and nums[idx] <= nums[i-1]:
+                idx -= 1
+            
+            self.swap(nums, i-1, idx)
+            nums[i:] = sorted(nums[i:])
+            return nums
