@@ -1,0 +1,38 @@
+Given the head of a singly linked list and two integers left and right where left <= right, reverse the nodes of the list from position left to position right, and return the reversed list.
+
+Input: head = [1,2,3,4,5], left = 2, right = 4
+Output: [1,4,3,2,5]
+
+Example 2:
+
+Input: head = [5], left = 1, right = 1
+Output: [5]
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:     
+    def reverseBetween(self, head: ListNode, left: int, right: int) -> ListNode:
+        # get value dict
+        val_dt = {}
+        idx = 1
+        p, left_p = head, head
+        while p:
+            if idx == left:
+                left_p = p
+            if idx >= left and idx <= right:
+                val_dt[idx] = p.val
+            p = p.next
+            idx += 1
+
+        idx = left
+        p = left_p
+        while p:
+            if idx <= right:
+                p.val = val_dt[right+left-idx]
+            p = p.next
+            idx += 1
+        return head
+
