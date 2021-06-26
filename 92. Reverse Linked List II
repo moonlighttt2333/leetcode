@@ -8,6 +8,7 @@ Example 2:
 Input: head = [5], left = 1, right = 1
 Output: [5]
 
+Method1: dictionary
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
@@ -37,7 +38,7 @@ class Solution:
         return head
 
 
-# Recursion method
+Method 2: Recursion method
 
 # Definition for singly-linked list.
 # class ListNode:
@@ -73,4 +74,42 @@ class Solution:
                 
                 
         recurseAndReverse(right, m, n)
+        return head
+        
+  
+Method 3: reverse the middle linked list and reconnect.  
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:     
+    def reverseBetween(self, head: ListNode, m: int, n: int) -> ListNode:
+        if not head:
+            return None
+        
+        # Move to the first pointer
+        cur, prev = head, None
+        while m > 1:
+            prev = cur
+            cur = cur.next
+            m, n = m-1, n-1
+        
+        # get start and end pointers
+        start, end = prev, cur
+        
+        # reverse the pointers between m to n
+        while n > 0:
+            next_p = cur.next
+            cur.next = prev
+            prev = cur
+            cur = next_p
+            n -= 1
+        
+        # reset start and end
+        if start:
+            start.next = prev
+        else:
+            head = prev
+        end.next = cur
         return head
