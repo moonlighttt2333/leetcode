@@ -34,3 +34,13 @@ while not q.empty():
 Output:
 
 (1, 'one') (5, 'five') (10, 'ten')
+
+
+4, Stack in python
+use collections.queue
+
+stack = collections.queue()
+stack.append('a')
+a = stack.pop()
+
+https://www.geeksforgeeks.org/stack-in-python/
