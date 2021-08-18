@@ -32,3 +32,15 @@ class Solution:
                 current //= 5
         return zero_count
             
+class Solution:
+    def trailingZeroes(self, n: int) -> int:
+        if n == 0:
+            return 0
+        
+        current_multiple = 5
+        zero_count = 0
+        while n >= current_multiple:
+            zero_count += n // current_multiple
+            current_multiple *= 5
+        return zero_count
+            
