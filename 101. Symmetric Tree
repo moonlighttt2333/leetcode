@@ -1,0 +1,51 @@
+Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).
+
+Input: root = [1,2,2,3,4,4,3]
+Output: true
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        def isMirror(r1, r2):
+            if r1 == None and r2 == None:
+                return True
+            if r1 == None or r2 == None:
+                return False
+            return (r1.val == r2.val) and isMirror(r1.left, r2.right) \
+                and isMirror(r1.right, r2.left)
+        return isMirror(root, root)
+        
+ 
+        
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        stack = collections.deque()
+        stack.append(root)
+        stack.append(root)
+        
+        while stack:
+            r1 = stack.pop()
+            r2 = stack.pop()
+            if r1 == None and r2 == None:
+                continue
+            if r1 == None or r2 == None:
+                return False
+            if r1.val != r2.val:
+                return False
+            
+            stack.append(r1.left)
+            stack.append(r2.right)
+            stack.append(r1.right)
+            stack.append(r2.left)
+        return True
