@@ -44,3 +44,6 @@ stack.append('a')
 a = stack.pop()
 
 https://www.geeksforgeeks.org/stack-in-python/
+
+5, find string
+haystack.find(needle)
