@@ -24,6 +24,7 @@ Input: grid = [
 Output: 3
 
 
+# DFS
 class Solution:
     def dfs(self, grid, m, n, i, j):
         grid[i][j] = '0'
@@ -49,4 +50,39 @@ class Solution:
                     # try to find the island
                     num_islands += 1
                     self.dfs(grid, m, n, i, j)
+        return num_islands
+
+# BFS
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        m = len(grid)
+        if not m:
+            return 0
+        n = len(grid[0])
+        
+        num_islands = 0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == '1':
+                    # try to find the island
+                    num_islands += 1
+                    grid[i][j] = '0'
+                    
+                    stack = collections.deque()
+                    stack.append((i, j))
+                    while stack:
+                        row, col = stack.pop()
+                        if (row - 1 >= 0 and grid[row-1][col] == '1'):
+                            stack.append((row-1, col))
+                            grid[row-1][col] = '0'
+                        if (row + 1 < m and grid[row+1][col] == '1'):
+                            stack.append((row+1, col))
+                            grid[row+1][col] = '0'
+                        if (col - 1 >= 0 and grid[row][col-1] == '1'):
+                            stack.append((row, col-1))
+                            grid[row][col-1] = '0'
+                        if (col + 1 < n and grid[row][col+1] == '1'):
+                            stack.append((row, col+1))
+                            grid[row][col+1] = '0'
+                        
         return num_islands
