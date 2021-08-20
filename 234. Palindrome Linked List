@@ -1,0 +1,110 @@
+Given the head of a singly linked list, return true if it is a palindrome.
+
+
+Input: head = [1,2,2,1]
+Output: true
+
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        if head == None or head.next == None:
+            return True
+        
+        # find the end of the first half
+        slow, fast = head, head
+        while fast.next and fast.next.next:
+            fast = fast.next.next
+            slow = slow.next
+        
+        # reverse the second half
+        second = slow
+        sp = slow.next
+        while sp:
+            tmp = sp
+            sp = sp.next
+            tmp.next = second
+            second = tmp
+        
+        # check if the list is palindrome
+        first = head
+        while first != slow.next:
+            if first.val != second.val:
+                return False
+            else:
+                first = first.next
+                second = second.next
+        return True
+        
+        
+        
+        
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        # get the length of the link
+        p = head
+        length = 0
+        while p:
+            length += 1
+            p = p.next
+        
+        # reverse the right half list
+        p = head
+        pre_p = ListNode(0, head)
+        step = 0
+        while p:
+            step += 1
+            if step > length // 2:
+                # reverse
+                tmp = p.next
+                p.next = pre_p
+                pre_p = p
+                p = tmp
+            else:
+                p = p.next
+                pre_p = pre_p.next
+
+        
+        # check if the list is palindrome
+        p1 = head
+        p2 = pre_p
+        step = 0
+        while step < length // 2:
+            if p1.val == p2.val:
+                p1 = p1.next
+                p2 = p2.next
+            else:
+                return False
+            step += 1
+        return True
+        
+        
+        
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        vals = []
+        
+        while head:
+            vals.append(head.val)
+            head = head.next
+        
+        length = len(vals)
+        for i in range(length//2):
+            if vals[i] != vals[length-i-1]:
+                return False
+        return True
+            
