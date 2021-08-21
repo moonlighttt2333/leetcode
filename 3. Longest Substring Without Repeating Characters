@@ -37,13 +37,11 @@ class Solution:
         dt = {}
         max_len = 0
         while i < len(s):
-            if s[i] not in dt:
-                dt[s[i]] = i
-            else:
-                if dt[s[i]] >= start:
+            if s[i] in dt and dt[s[i]] >= start:
                     start = dt[s[i]] + 1
-                dt[s[i]] = i
+            dt[s[i]] = i
             max_len = max(i - start + 1, max_len)
             i += 1
         return max_len
+        
         
