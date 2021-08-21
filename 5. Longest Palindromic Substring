@@ -1,0 +1,47 @@
+Given a string s, return the longest palindromic substring in s.
+
+ 
+
+Example 1:
+
+Input: s = "babad"
+Output: "bab"
+Note: "aba" is also a valid answer.
+Example 2:
+
+Input: s = "cbbd"
+Output: "bb"
+Example 3:
+
+Input: s = "a"
+Output: "a"
+
+# Dynamic Programming
+
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        n = len(s)
+        if n <= 1:
+            return s
+        
+        max_len = 1
+        max_str = s[0]
+        P = [[-1] * n for i in range(n)]
+        for i in range(n):
+            P[i][i] = 1
+            if i < n-1 and s[i] == s[i+1]:
+                P[i][i+1] = 1
+                max_len = 2
+                max_str = s[i:i+2]
+        
+
+        for sub_len in range(3, n+1):
+            for start in range(n-sub_len+1):
+                if P[start+1][start+sub_len-2] == 1 and s[start] == s[start+sub_len-1]:
+                    P[start][start+sub_len-1] = 1
+                    if sub_len > max_len:
+                        max_len = sub_len
+                        max_str = s[start: start+sub_len]
+        return max_str
+                    
+        
