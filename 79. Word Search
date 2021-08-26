@@ -1,0 +1,49 @@
+Given an m x n grid of characters board and a string word, return true if word exists in the grid.
+
+The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
+
+
+Input: board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+Output: true
+
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        def dfs(board, word, visited, m, n, i, j, index):
+            if index == len(word):
+                return True
+            if (i < m - 1 and visited[i+1][j] == False and board[i+1][j] == word[index]):
+                visited[i+1][j] = True
+                if dfs(board, word, visited, m, n, i+1, j, index + 1):
+                    return True
+                else:
+                    visited[i+1][j] = False
+            if (i > 0 and visited[i-1][j] == False and board[i-1][j] == word[index]):
+                visited[i-1][j] = True
+                if dfs(board, word, visited, m, n, i-1, j, index + 1):
+                    return True
+                else:
+                    visited[i-1][j] = False
+            if (j < n - 1 and visited[i][j+1] == False and board[i][j+1] == word[index]):
+                visited[i][j+1] = True
+                if dfs(board, word, visited, m, n, i, j+1, index + 1):
+                    return True
+                else:
+                    visited[i][j+1] = False
+            if (j > 0 and visited[i][j-1] == False and board[i][j-1] == word[index]):
+                visited[i][j-1] = True
+                if dfs(board, word, visited, m, n, i, j-1, index + 1):
+                    return True
+                else:
+                    visited[i][j-1] = False
+            return False       
+            
+        m = len(board)
+        n = len(board[0])
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] == word[0]:
+                    visited = [[False] * n for i in range(m)]
+                    visited[i][j] = True
+                    if dfs(board, word, visited, m, n, i, j, 1):
+                        return True
+        return False
