@@ -9,7 +9,7 @@ Any dead cell with exactly three live neighbors becomes a live cell, as if by re
 The next state is created by applying the above rules simultaneously to every cell in the current state, where births and deaths occur simultaneously. Given the current state of the m x n grid board, return the next state.
 
 
-Solution 1: brute force
+Solution 1: brute force, copy Board
 
 class Solution:
     def gameOfLife(self, board: List[List[int]]) -> None:
@@ -39,4 +39,42 @@ class Solution:
         for i in range(m):
             for j in range(n):
                 board[i][j] = nextGeneration[i][j]
+        return board
+
+Solution 2: Special flag (1 => 0: -1; 0 => 1: 2)
+Without using additional board space
+
+class Solution:
+    def gameOfLife(self, board: List[List[int]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        m = len(board)
+        n = len(board[0])
+        
+        neighbors = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+        for i in range(m):
+            for j in range(n):
+                liveNeighbors = 0
+                
+                for neighbor in neighbors:
+                    n_row = i + neighbor[0]
+                    n_col = j + neighbor[1]
+                    if (n_row >= 0 and n_row < m) and (n_col >= 0 and n_col < n):
+                        if board[n_row][n_col] == 1 or board[n_row][n_col] == -1:
+                            liveNeighbors += 1
+                
+                if board[i][j] == 0 and liveNeighbors == 3:
+                    board[i][j] = 2
+                if board[i][j] == 1:
+                    if liveNeighbors < 2 or liveNeighbors > 3:
+                        board[i][j] = -1
+                        
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] == 2:
+                    board[i][j] = 1
+                if board[i][j] == -1:
+                    board[i][j] = 0
+                    
         return board
