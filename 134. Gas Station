@@ -53,3 +53,19 @@ class Solution:
             if complete:
                 return i
         return -1
+
+
+Solution 2: One pass
+class Solution:
+    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+        start_index, cur_gas, total_gas = 0, 0, 0
+        for i in range(len(gas)):
+            added = gas[i] - cost[i]
+            cur_gas += added
+            total_gas += added
+            if cur_gas < 0:
+                start_index = i + 1
+                cur_gas = 0
+        if total_gas >= 0:
+            return start_index
+        return -1
