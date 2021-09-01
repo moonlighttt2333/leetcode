@@ -50,6 +50,9 @@ Explanation: By calling next repeatedly until hasNext returns false, the order o
 #        Return None if this NestedInteger holds a single integer
 #        """
 
+
+Solution 1: Use stack for both nestedList and index
+
 class NestedIterator:
     def __init__(self, nestedList: [NestedInteger]):
         self.stack = [[nestedList, 0]]
@@ -79,6 +82,53 @@ class NestedIterator:
             self.stack[-1][1] += 1
             self.stack.append([new_list, 0])
                 
+
+Solution 2: add reversed nestedList into stack
+
+class NestedIterator:
+    def __init__(self, nestedList: [NestedInteger]):
+        self.stack = list(reversed(nestedList))
+        
+    def next(self) -> int:
+        self.get_top_integer()
+        return self.stack.pop().getInteger()
+    
+    def hasNext(self) -> bool:
+        self.get_top_integer()
+        return len(self.stack) > 0
+
+    def get_top_integer(self):
+        while self.stack and not self.stack[-1].isInteger():
+            self.stack.extend(reversed(self.stack.pop().getList()))
+
+Solution 3: Flattern all the integers first
+
+class NestedIterator:
+    def __init__(self, nestedList: [NestedInteger]):
+        self._integers = []
+        self._position = -1
+        
+        def flattern_list(nested_list):
+            for nestedInteger in nested_list:
+                if nestedInteger.isInteger():
+                    self._integers.append(nestedInteger.getInteger())
+                else:
+                    flattern_list(nestedInteger.getList())
+        flattern_list(nestedList)
+        self._max_len = len(self._integers)
+        
+    def next(self) -> int:
+        if self._position < self._max_len - 1:
+            self._position += 1
+            return self._integers[self._position]
+        else:
+            raise StopIteration()
+    
+    def hasNext(self) -> bool:
+        if self._position < self._max_len - 1:
+            return True
+        else:
+            return False
 
 # Your NestedIterator object will be instantiated and called as such:
 # i, v = NestedIterator(nestedList), []
