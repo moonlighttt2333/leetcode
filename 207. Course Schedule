@@ -1,0 +1,121 @@
+There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.
+
+For example, the pair [0, 1], indicates that to take course 0 you have to first take course 1.
+Return true if you can finish all courses. Otherwise, return false.
+
+ 
+
+Example 1:
+
+Input: numCourses = 2, prerequisites = [[1,0]]
+Output: true
+Explanation: There are a total of 2 courses to take. 
+To take course 1 you should have finished course 0. So it is possible.
+Example 2:
+
+Input: numCourses = 2, prerequisites = [[1,0],[0,1]]
+Output: false
+Explanation: There are a total of 2 courses to take. 
+To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.
+
+
+Solution 1: backtracking (dfs)
+
+   class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        courseDict = collections.defaultdict(list)
+        for relation in prerequisites:
+            cur, pre = relation
+            courseDict[pre].append(cur)
+        
+        path = [False] * numCourses
+        for currCourse in range(numCourses):
+            if self.isCyclic(currCourse, courseDict, path):
+                return False
+        return True
+            
+    
+    def isCyclic(self, currCourse, courseDict, path):
+        if path[currCourse]:
+            return True
+        
+        path[currCourse] = True
+        ret = False
+        for child in courseDict[currCourse]:
+            ret = self.isCyclic(child, courseDict, path)
+            if ret:
+                break
+        path[currCourse] = False
+        return ret
+    
+Solution 2: backtracking (dfs) with memo
+
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        courseDict = collections.defaultdict(list)
+        for relation in prerequisites:
+            cur, prev = relation
+            courseDict[prev].append(cur)
+        
+        checked = [False] * numCourses
+        path = [False] * numCourses
+        
+        for currCourse in range(numCourses):
+            if self.isCyclic(currCourse, courseDict, checked, path):
+                return False
+        return True
+    
+    def isCyclic(self, currCourse, courseDict, checked, path):
+        if checked[currCourse]:
+            return False
+        if path[currCourse]:
+            return True
+
+        path[currCourse] = True
+        ret = False
+        for child in courseDict[currCourse]:
+            ret = self.isCyclic(child, courseDict, checked, path)
+            if ret:
+                break
+        checked[currCourse] = True
+        path[currCourse] = False
+        return ret
+   
+
+
+Solution 3: topological sort (kahn's algorithm)
+
+class GNode(object):
+    def __init__(self):
+        self.inDegrees = 0
+        self.outNodes = []
+        
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        graph = collections.defaultdict(GNode)
+        
+        totalEdges = len(prerequisites)
+        for relation in prerequisites:
+            cur, prev = relation
+            graph[cur].inDegrees += 1
+            graph[prev].outNodes.append(cur)
+        
+        nodes = collections.deque()
+        for index, node in graph.items():
+            if node.inDegrees == 0:
+                nodes.append(index)
+        
+        removedEdges = 0
+        while nodes:
+            course = nodes.pop()
+            
+            for nextCourse in graph[course].outNodes:
+                graph[nextCourse].inDegrees -= 1
+                removedEdges += 1
+                
+                if graph[nextCourse].inDegrees == 0:
+                    nodes.append(nextCourse)
+        if removedEdges == totalEdges:
+            return True
+        else:
+            return False
