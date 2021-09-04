@@ -113,3 +113,25 @@ class Solution:
             if nums_count > base_count:
                 duplicate |= mask
         return duplicate
+
+Approach 7: Floyd's tortoise and hare
+
+class Solution:
+    
+    def findDuplicate(self, nums: List[int]) -> int:
+        # first phase
+        # hare: twice as tortoise
+        tortoise, hare = nums[0], nums[0]
+        while True:
+            tortoise = nums[tortoise]
+            hare = nums[nums[hare]]
+            if tortoise == hare:
+                break
+        
+        # second phase
+        # hare meet tortoise at the entrance of the cycle
+        tortoise = nums[0]
+        while tortoise != hare:
+            tortoise = nums[tortoise]
+            hare = nums[hare]
+        return hare
