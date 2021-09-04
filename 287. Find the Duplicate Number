@@ -69,5 +69,20 @@ class Solution:
             nums[nums[0]], nums[0] = nums[0], nums[nums[0]]
         return nums[0]
         
-Approach 5
+Approach 5 Use count to indicate whether this number is smaller than the duplicated number or larger than the duplicate number
++ Binary Search
        
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        low, high = 1, len(nums) - 1
+        while low <= high:
+            cur = (low + high) // 2
+            small_than_cur = [num <= cur for num in nums]
+            count = sum(small_than_cur)
+            if count > cur:
+                dup = cur
+                high = cur - 1
+            else:
+                low = cur + 1
+            
+        return dup
