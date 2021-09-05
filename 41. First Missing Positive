@@ -24,6 +24,8 @@ Constraints:
 -231 <= nums[i] <= 231 - 1
 
 
+Solution 1: negative masking
+
 class Solution:
     def firstMissingPositive(self, nums: List[int]) -> int:
         # check if 1 in present in the array
