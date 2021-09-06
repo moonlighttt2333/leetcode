@@ -96,3 +96,27 @@ class Solution:
             low = root.val
             root = root.right
         return True
+
+Solution 3: Inorder
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        def inorder(root):
+            if not root:
+                return True
+            
+            if not inorder(root.left):
+                return False
+            if root.val <= self.low:
+                return False
+            self.low = root.val
+            return inorder(root.right)
+
+        self.low = float('-inf')
+        return inorder(root)
