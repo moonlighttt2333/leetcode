@@ -18,7 +18,7 @@ Explanation: The root node's value is 5 but its right child's value is 4.
 [5,4,6,null,null,3,7]
 False
 
-Solution 1: Top down, recursion
+Solution 1: low, high, recursion
 
 # Definition for a binary tree node.
 # class TreeNode:
@@ -39,15 +39,28 @@ class Solution:
 
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
         return self.helper(root, float('-inf'), float('inf'))
+
+Solution 2: low, high, with stack
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return True
         
- Solution 2: Bottom up, with stack
- 
- # Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+        stack = collections.deque()
+        stack.append((root, float('-inf'), float('inf')))
+        
+        while stack:
+            root, low, high = stack.pop()
+            if root.val <= low or root.val >= high:
+                return False
+            if root.left:
+                stack.append((root.left, low, root.val))
+            if root.right:
+                stack.append((root.right, root.val, high))
+        return True
+        
+Solution 3: in order, with stack
+
 class Solution:
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
         if not root:
@@ -97,7 +110,7 @@ class Solution:
             root = root.right
         return True
 
-Solution 3: Inorder
+Solution 4: Inorder, recursion
 
 # Definition for a binary tree node.
 # class TreeNode:
