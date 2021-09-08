@@ -30,3 +30,22 @@ s and t consist only of lowercase English letters.
                 return False
             start_idx = cur_idx + 1
         return True
+
+
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        s_length = len(s)
+        t_length = len(t)
+        
+        def rec_subsequence(s_idx, t_idx):
+            if s_idx == s_length:
+                return True
+            if t_idx == t_length:
+                return False
+            
+            if s[s_idx] == t[t_idx]:
+                s_idx += 1
+            t_idx += 1
+            
+            return rec_subsequence(s_idx, t_idx)
+        return rec_subsequence(0, 0)
