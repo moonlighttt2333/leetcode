@@ -1,0 +1,59 @@
+340. Longest Substring with At Most K Distinct Characters
+Medium
+
+Given a string s and an integer k, return the length of the longest substring of s that contains at most k distinct characters.
+
+ 
+
+Example 1:
+
+Input: s = "eceba", k = 2
+Output: 3
+Explanation: The substring is "ece" with length 3.
+Example 2:
+
+Input: s = "aa", k = 1
+Output: 2
+Explanation: The substring is "aa" with length 2.
+ 
+
+Constraints:
+
+1 <= s.length <= 5 * 104
+0 <= k <= 50
+
+Solution 1, sliding window with hash map
+class Solution:
+    def lengthOfLongestSubstringKDistinct(self, s: str, k: int) -> int:
+        char_map = {}
+        res = 0
+        l = 0
+        for i,ch in enumerate(s):
+            char_map[ch] = i
+            if len(char_map) > k:
+                min_item = min(char_map.values())
+                del char_map[s[min_item]]
+                l = min_item + 1
+                
+            res = max(res, i - l + 1)
+        return res
+        
+Solution 2, sliding window with OrderedDict
+class Solution:
+    def lengthOfLongestSubstringKDistinct(self, s: str, k: int) -> int:
+        if k == 0:
+            return 0
+        
+        hash_map = collections.OrderedDict()
+        left, right, max_len = 0, 0, 0
+        while right < len(s):
+            if s[right] in hash_map:
+                del hash_map[s[right]]
+            hash_map[s[right]] = right
+            if len(hash_map.keys()) > k:
+                # delete the earliest character
+                _, del_idx = hash_map.popitem(last=False)
+                left = del_idx + 1
+            max_len = max(max_len, right - left + 1)
+            right += 1
+        return max_len
