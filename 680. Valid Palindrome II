@@ -1,0 +1,38 @@
+Given a string s, return true if the s can be palindrome after deleting at most one character from it.
+
+ 
+
+Example 1:
+
+Input: s = "aba"
+Output: true
+Example 2:
+
+Input: s = "abca"
+Output: true
+Explanation: You could delete the character 'c'.
+Example 3:
+
+Input: s = "abc"
+Output: false
+
+class Solution:    
+    def validPalindrome(self, s: str) -> bool:
+        if s == s[::-1]:
+            return True
+        
+        left, right = 0, len(s) - 1
+        while left < right:
+            if s[left] != s[right]:
+                break
+            else:
+                left += 1
+                right -= 1
+        
+        left_shift = s[left+1:right+1]
+        if left_shift == left_shift[::-1]:
+            return True
+        right_shift = s[left:right]
+        if right_shift == right_shift[::-1]:
+            return True
+        return False
