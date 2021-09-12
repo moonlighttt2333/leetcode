@@ -1,0 +1,40 @@
+Given two binary strings a and b, return their sum as a binary string.
+
+ 
+
+Example 1:
+
+Input: a = "11", b = "1"
+Output: "100"
+Example 2:
+
+Input: a = "1010", b = "1011"
+Output: "10101"
+
+class Solution:
+    def get_digit(self, s):
+        if s == '1':
+            return 1
+        else:
+            return 0
+        
+    def addBinary(self, a: str, b: str) -> str:
+        a_idx = len(a) - 1
+        b_idx = len(b) - 1
+        add = 0
+        
+        output = ''
+        while a_idx >= 0 or b_idx >= 0 or add:
+            digit_a, digit_b = 0, 0
+            if a_idx >= 0:
+                digit_a = self.get_digit(a[a_idx])
+                a_idx -= 1
+            if b_idx >= 0:
+                digit_b = self.get_digit(b[b_idx])
+                b_idx -= 1
+            total = digit_a + digit_b + add
+            add = int(total / 2)
+            output = str(total % 2) + output
+        return output
+            
+                
