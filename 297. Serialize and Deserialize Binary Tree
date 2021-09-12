@@ -1,0 +1,133 @@
+Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.
+
+Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization/deserialization algorithm should work. You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure.
+
+Clarification: The input/output format is the same as how LeetCode serializes a binary tree. You do not necessarily need to follow this format, so please be creative and come up with different approaches yourself.
+
+
+Solution 1: DFS
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Codec:
+
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        def serialize_helper(root, string):
+            if root is None:
+                string += 'None,'
+            else:
+                string += str(root.val) + ','
+                string = serialize_helper(root.left, string)
+                string = serialize_helper(root.right, string)
+            return string
+        
+        return serialize_helper(root, '')
+
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        """
+        def deserialize_helper(vals):
+            if vals[0] == 'None':
+                vals.pop(0)
+                return None
+            root = TreeNode(vals[0])
+            
+            vals.pop(0)
+            root.left = deserialize_helper(vals)
+            root.right = deserialize_helper(vals)
+            return root
+        
+        vals = data.split(',')
+        root = deserialize_helper(vals)
+        return root
+            
+
+# Your Codec object will be instantiated and called as such:
+# ser = Codec()
+# deser = Codec()
+# ans = deser.deserialize(ser.serialize(root))
+
+Solution 2: BFS with stack
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Codec:
+
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        stack = collections.deque()
+        vals = []
+        if root:
+            stack.append(root)
+        while stack:
+            cur_node = stack.popleft()
+            if cur_node:
+                vals.append(str(cur_node.val))
+                stack.append(cur_node.left)
+                stack.append(cur_node.right)
+            else:
+                vals.append('')
+        return ' '.join(vals)
+        
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        """
+        if not data:
+            return None
+        
+        vals = []
+        for v in data.split(' '):
+            if v:
+                vals.append(int(v))
+            else:
+                vals.append(None)
+        
+        stack = collections.deque()
+        # construct root
+        root = TreeNode(vals[0])
+        stack.append(root)
+        i = 1
+        while stack and i <= len(vals) - 2:
+            node = stack.popleft()
+            # construct node
+            if vals[i] is not None:
+                node.left = TreeNode(vals[i])
+                stack.append(node.left)
+            if vals[i+1] is not None:
+                node.right = TreeNode(vals[i+1])
+                stack.append(node.right)
+            i += 2
+        return root
+            
+
+# Your Codec object will be instantiated and called as such:
+# ser = Codec()
+# deser = Codec()
+# ans = deser.deserialize(ser.serialize(root))
