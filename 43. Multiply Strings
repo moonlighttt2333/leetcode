@@ -1,0 +1,87 @@
+
+Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
+
+Note: You must not use any built-in BigInteger library or convert the inputs to integer directly.
+
+ 
+
+Example 1:
+
+Input: num1 = "2", num2 = "3"
+Output: "6"
+Example 2:
+
+Input: num1 = "123", num2 = "456"
+Output: "56088"
+ 
+
+Constraints:
+
+1 <= num1.length, num2.length <= 200
+num1 and num2 consist of digits only.
+Both num1 and num2 do not contain any leading zero, except the number 0 itself.
+
+# Convert to integer, then multiply
+
+
+class Solution:
+    def str2int(self, num: str) -> int:
+        ret = 0
+
+        num_reversed = list(reversed(num))
+        
+        for i in range(len(num_reversed)):
+            ret = ret + int(num_reversed[i])*10**i
+            
+        return ret
+    
+    def multiply(self, num1: str, num2: str) -> str:
+        num1_num = self.str2int(num1)
+
+        num2_num = self.str2int(num2)
+        
+        total = num1_num * num2_num
+        
+        return str(total)
+
+
+# without using multiply
+
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        if num1 == '0' or num2 == '0':
+            return '0'
+        
+        l1, l2 = len(num1), len(num2)
+        
+        # convert string into integer
+        n1 = []
+        for i in reversed(range(l1)):
+            n1.append(ord(num1[i]) - ord('0'))
+            
+        n2 = []
+        for i in reversed(range(l2)):
+            n2.append(ord(num2[i]) - ord('0'))
+            
+        # multiply first
+        products = []
+        for i in range(l1):
+            for j in range(l2):
+                cur_product = n1[i] * n2[j]
+                if i + j >= len(products):
+                    products.append(cur_product)
+                else:
+                    products[i+j] += cur_product
+        
+        # take care of the adds
+        i, add = 0, 0
+        ret = ''
+        while i < len(products) or add > 0:
+            cur_num = add
+            if i < len(products):
+                cur_num += products[i]
+                i += 1
+            add = cur_num // 10
+            ret = str(cur_num%10) + ret
+        
+        return ret
