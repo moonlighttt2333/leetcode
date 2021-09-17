@@ -16,7 +16,7 @@ Example 2:
 Input: pid = [1], ppid = [0], kill = 1
 Output: [1]
 
-
+BFS
 class Solution:
     def killProcess(self, pid: List[int], ppid: List[int], kill: int) -> List[int]:
         pid_num = len(pid)
@@ -36,3 +36,20 @@ class Solution:
                     stack.append(c)
         return ans
             
+
+DFS
+class Solution:
+    def dfs(self, node, children):
+        kill_pids = [node]
+        if node in children:
+            for child in children[node]:
+                kill_pids.extend(self.dfs(child, children))
+        return kill_pids
+        
+    def killProcess(self, pid: List[int], ppid: List[int], kill: int) -> List[int]:
+        children = collections.defaultdict(list)
+        for parent, child in zip(ppid, pid):
+            children[parent].append(child)
+        
+        ans = self.dfs(kill, children)
+        return ans
