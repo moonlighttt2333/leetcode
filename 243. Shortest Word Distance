@@ -48,3 +48,19 @@ class Solution:
                 # both have
                 ans = min(ans, abs(w2_idx - w1_idx))
         return ans
+
+
+class Solution:
+    def shortestDistance(self, wordsDict: List[str], word1: str, word2: str) -> int:
+        w1_idx, w2_idx, ans = -1, -1, float('inf')
+        for i, w in enumerate(wordsDict):
+            if w == word1:
+                w1_idx = i
+                if w2_idx != -1:
+                    ans = min(ans, abs(w2_idx - w1_idx))
+            elif w == word2:
+                w2_idx = i
+                if w1_idx != -1:
+                    ans = min(ans, abs(w2_idx - w1_idx))
+
+        return ans
