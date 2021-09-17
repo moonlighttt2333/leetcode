@@ -1,0 +1,55 @@
+Given the string croakOfFrogs, which represents a combination of the string "croak" from different frogs, that is, multiple frogs can croak at the same time, so multiple “croak” are mixed. Return the minimum number of different frogs to finish all the croak in the given string.
+
+A valid "croak" means a frog is printing 5 letters ‘c’, ’r’, ’o’, ’a’, ’k’ sequentially. The frogs have to print all five letters to finish a croak. If the given string is not a combination of valid "croak" return -1.
+
+ 
+
+Example 1:
+
+Input: croakOfFrogs = "croakcroak"
+Output: 1 
+Explanation: One frog yelling "croak" twice.
+Example 2:
+
+Input: croakOfFrogs = "crcoakroak"
+Output: 2 
+Explanation: The minimum number of frogs is two. 
+The first frog could yell "crcoakroak".
+The second frog could yell later "crcoakroak".
+Example 3:
+
+Input: croakOfFrogs = "croakcrook"
+Output: -1
+Explanation: The given string is an invalid combination of "croak" from different frogs.
+Example 4:
+
+Input: croakOfFrogs = "croakcroa"
+Output: -1
+
+
+class Solution:
+    def minNumberOfFrogs(self, croakOfFrogs: str) -> int:
+        c, r, o, a, k, in_use, ans = 0, 0, 0, 0, 0, 0, 0
+        
+        for char in croakOfFrogs:
+            if char == 'c':
+                c += 1
+                in_use += 1
+            elif char == 'r':
+                r += 1
+            elif char == 'o':
+                o += 1
+            elif char == 'a':
+                a += 1
+            elif char == 'k':
+                k += 1
+                in_use -= 1
+            
+            if c < r or r < o or o < a or a < k:
+                return -1
+            
+            ans = max(ans, in_use)
+        
+        if in_use == 0:
+            return ans
+        return -1
