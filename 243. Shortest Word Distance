@@ -30,3 +30,21 @@ class Solution(object):
                 if abs(i - j) < min_dis:
                     min_dis = abs(i - j)
         return min_dis
+
+Solution 2, One pass
+
+class Solution:
+    def shortestDistance(self, wordsDict: List[str], word1: str, word2: str) -> int:
+        w1_idx, w2_idx, ans = -1, -1, float('inf')
+        for i, w in enumerate(wordsDict):
+            if w == word1:
+                w1_idx = i
+            elif w == word2:
+                w2_idx = i
+            else:
+                continue
+        
+            if w1_idx >= 0 and w2_idx >= 0:
+                # both have
+                ans = min(ans, abs(w2_idx - w1_idx))
+        return ans
