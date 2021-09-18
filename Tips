@@ -58,3 +58,7 @@ https://www.geeksforgeeks.org/stack-in-python/
 
 5, find string
 haystack.find(needle)
+
+6, find element in the list
+if key in self.keys:
+    idx = self.keys.index(key)
