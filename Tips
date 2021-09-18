@@ -1,3 +1,14 @@
+0, Sort by two keys
+
+a_list = ["aaa", "cc", "bb"]
+
+sorted(a_list, key = lambda k: (len(k), k))
+# first sort by length, then sort by alphabetically.
+['bb', 'cc', 'aaa']
+
+You can also use "-" if the one key is increasing and the other in decresing.
+
+
 1, For/else:
 
 for item in container:
