@@ -14,20 +14,25 @@ Thus, 5 is a majority element because 5 > 9/2 is true.
 
 class Solution:
     def isMajorityElement(self, nums: List[int], target: int) -> bool:
-        N = len(nums)
-            
-        left = 0
-        right = N-1
+        n = len(nums)
+        
+        left, right = 0, n - 1
         while left < right:
-            if (left > int(N/2)):
+            if left > n // 2:
                 return False
             
             mid = (left + right) // 2
-            if nums[mid] >= target:
+            if nums[mid] == target:
+                if mid == 0 or nums[mid-1] != target:
+                    left = mid
+                    break
+                else:
+                    right = mid - 1
+            elif nums[mid] > target:
                 right = mid - 1
             else:
                 left = mid + 1
-        if left + int(N/2) < N and nums[left + int(N/2)] == target:
+            
+        if left + n // 2 < n and nums[left + n //2] == target:
             return True
-        else:
-            return False
+        return False
