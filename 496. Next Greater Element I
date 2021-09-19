@@ -25,7 +25,7 @@ Explanation: The next greater element for each value of nums1 is as follows:
 - 4 is underlined in nums2 = [1,2,3,4]. There is no next greater element, so the answer is -1.
  
 
-
+# Solution 1, using find
 class Solution:
     def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
         ans = []
@@ -40,3 +40,65 @@ class Solution:
             if not first_greater:
                 ans.append(-1)
         return ans
+
+Solution 2, O(n^2)
+class Solution:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        ans = []
+        for n in nums1:
+            found = False
+            first_greater = False
+            for i in range(len(nums2)):
+                if nums2[i] == n:
+                    found = True
+                if found and nums2[i] > n:
+                    first_greater = True
+                    ans.append(nums2[i])
+                    break
+            if not first_greater:
+                ans.append(-1)
+        return ans
+        
+# Solution 3, using hash map
+class Solution:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        hash_map = {}
+        for i, n in enumerate(nums2):
+            hash_map[n] = i
+        
+        ans = []
+        for n in nums1:
+            first_greater = False
+            idx = hash_map[n]
+            for i in range(idx + 1, len(nums2)):
+                if nums2[i] > n:
+                    first_greater = True
+                    ans.append(nums2[i])
+                    break
+            if not first_greater:
+                ans.append(-1)
+        return ans
+        
+        
+ # Solution 4, using hash map and stack
+ 
+ class Solution:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        hash_map = {}
+        
+        stack = collections.deque()
+        for n in nums2:
+            while stack and n > stack[-1]:
+                hash_map[stack.pop()] = n
+            stack.append(n)
+                
+        while stack:
+            hash_map[stack.pop()] = -1
+        
+        ans = []
+        for n in nums1:
+            ans.append(hash_map[n])
+        return ans
+ 
+ 
+ 
