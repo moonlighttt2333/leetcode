@@ -59,11 +59,25 @@ class Solution:
 class Solution:
     def minKnightMoves(self, x: int, y: int) -> int:        
         
-        def dfs(x, y):
+class Solution:
+    def minKnightMoves(self, x: int, y: int) -> int:        
+        
+        memo = {}
+        
+        def dfs(x, y, memo):
             if x + y == 0:
                 return 0
             elif x + y == 2:
                 return 2
             else:
-                return min(dfs(abs(x-1), abs(y-2)), dfs(abs(x-2), abs(y-1))) + 1
-        return dfs(abs(x), abs(y))
+                candidates = [(abs(x-1), abs(y-2)), (abs(x-2), abs(y-1))]
+                min_step = float('inf')
+                for p in candidates:
+                    if p not in memo:
+                        memo[p] = dfs(p[0], p[1], memo)
+                    min_step = min(min_step, memo[p])
+                
+                return min_step + 1
+            
+        return dfs(abs(x), abs(y), memo)
+    
