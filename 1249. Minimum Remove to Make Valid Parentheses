@@ -54,3 +54,35 @@ class Solution:
             else:
                 ret += c
         return ret
+
+
+class Solution:
+    def minRemoveToMakeValid(self, s: str) -> str:
+        # first pass, remove all the invalid '('
+        left_idx = []
+        balanced = 0
+
+        first_pass = []
+        for i, c in enumerate(s):
+            if c == '(':
+                balanced += 1
+                left_idx.append(i)
+            elif c == ')':
+                if balanced == 0:
+                    continue
+                balanced -= 1
+            first_pass.append(c)
+            
+        # second pass, remove '(' from right
+        second_pass = []
+        used_left = 0
+        remained_left = len(left_idx) - balanced
+        for i, c in enumerate(first_pass):
+            if c == '(':
+                if used_left < remained_left:
+                    second_pass.append(c)
+                    used_left += 1
+            else:
+                second_pass.append(c)
+        return ''.join(second_pass)
+            
