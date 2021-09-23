@@ -41,3 +41,16 @@ class Solution:
         while stack:
             outputs.append(stack.popleft())
         return outputs
+
+
+class Solution:
+    def findBuildings(self, heights: List[int]) -> List[int]:
+        highest_right = -1
+        
+        outputs = []
+        for i in range(len(heights) - 1, -1, -1):
+            if heights[i] > highest_right:
+                outputs.append(i)
+                highest_right = heights[i]
+        outputs.reverse()
+        return outputs
