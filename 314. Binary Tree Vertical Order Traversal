@@ -55,3 +55,26 @@ class Solution:
         sorted_array = sorted(array.items(), key = lambda k: k[0])
         ans = [vals for idx, vals in sorted_array]
         return ans
+
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if root is None:
+            return []
+        stack = collections.deque()
+        stack.append((root, 0))
+        ans = collections.defaultdict(list)
+        while stack:
+            node, idx = stack.popleft()
+            if node is not None:
+                ans[idx].append(node.val)
+                stack.append((node.left, idx-1))
+                stack.append((node.right, idx+1))
+        
+        return [ans[i] for i in sorted(ans.keys())]
