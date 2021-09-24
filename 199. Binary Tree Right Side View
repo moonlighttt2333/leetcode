@@ -16,3 +16,33 @@ Constraints:
 The number of nodes in the tree is in the range [0, 100].
 -100 <= Node.val <= 100
 
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        if root is None:
+            return []
+        
+        stack = collections.deque()
+        stack.append((root,  0))
+        prev_layer = 0
+        prev_node = root
+        ans = []
+        while stack:
+            node, layer = stack.popleft()
+            if node.left:
+                stack.append((node.left, layer + 1))
+            if node.right:
+                stack.append((node.right, layer + 1))
+            
+            if layer != prev_layer:
+                ans.append(prev_node.val)
+                prev_layer = layer
+            prev_node = node
+        ans.append(prev_node.val)
+        return ans
+            
