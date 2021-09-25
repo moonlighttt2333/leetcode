@@ -50,3 +50,18 @@ class Solution:
                     return int(''.join(A))
         return num
             
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        digits = [int(x) for x in str(num)]
+        max_idx = len(digits) - 1
+        idx1, idx2 = 0, 0
+        
+        for i in range(len(digits) -1, -1, -1):
+            if digits[i] < digits[max_idx]:
+                idx1 = i
+                idx2 = max_idx
+            elif digits[i] > digits[max_idx]:
+                max_idx = i
+        
+        digits[idx1], digits[idx2] = digits[idx2], digits[idx1]
+        return int(''.join([str(x) for x in digits]))
