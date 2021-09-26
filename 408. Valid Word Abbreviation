@@ -1,0 +1,56 @@
+A string can be abbreviated by replacing any number of non-adjacent substrings with their lengths. For example, a string such as "substitution" could be abbreviated as (but not limited to):
+
+"s10n" ("s ubstitutio n")
+"sub4u4" ("sub stit u tion")
+"12" ("substitution")
+"su3i1u2on" ("su bst i t u ti on")
+"substitution" (no substrings replaced)
+"s010n" (leading zeros in numbers are allowed)
+Note that "s55n" ("s ubsti tutio n") is not a valid abbreviation of "substitution" because the replaced substrings are adjacent.
+
+Given a string word and an abbreviation abbr, return whether the string matches with the given abbreviation.
+
+ 
+
+Example 1:
+
+Input: word = "internationalization", abbr = "i12iz4n"
+Output: true
+Explanation: The word "internationalization" can be abbreviated as "i12iz4n" ("i nternational iz atio n").
+Example 2:
+
+Input: word = "apple", abbr = "a2e"
+Output: false
+Explanation: The word "apple" cannot be abbreviated as "a2e".
+ 
+
+Constraints:
+
+1 <= word.length <= 20
+word consists of only lowercase English letters.
+1 <= abbr.length <= 10
+abbr consists of lowercase English letters and digits.
+All the integers in abbr will fit in a 32-bit integer.
+
+
+class Solution:
+    def validWordAbbreviation(self, word: str, abbr: str) -> bool:
+        word_idx = 0
+        prev_number = 0
+        for c in abbr:
+            if c.isnumeric():
+                if prev_number == 0 and int(c) == 0:
+                    return False
+                prev_number = prev_number * 10 + int(c)
+            else:
+                if prev_number > 0:
+                    word_idx += prev_number
+                    prev_number = 0
+                # check current char
+                if word_idx < len(word) and word[word_idx] == c:
+                    word_idx += 1
+                else:
+                    return False
+        if word_idx + prev_number != len(word):
+            return False
+        return True
